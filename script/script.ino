@@ -23,6 +23,8 @@ void setup(){
     lcd.backlight();
     lcd.setCursor(0,0);
     lcd.print("GPU:   % T:    C");
+    lcd.setCursor(14, 0);
+    lcd.print((char)223);
     lcd.setCursor(0, 1);
     lcd.print("MEM:    /     GB");
     
@@ -35,21 +37,28 @@ void loop(){
   if(Serial.available()>0){   
     txt = Serial.readString();
     formatData(txt);
-    Serial.println("hfasdds");
+
     lcd.setCursor(4,0);
     lcd.print("   ");
     lcd.setCursor(4,0);
     lcd.print(data[3]);
+
+    lcd.setCursor(11, 0);
+    lcd.print("   ");
+    lcd.setCursor(11, 0);
+    lcd.print(data[2]);
+
     lcd.setCursor(4,1);
     lcd.print("    ");
     lcd.setCursor(4,1);
     lcd.print(data[4]);
+
     lcd.setCursor(9,1);
     lcd.print("     ");
     lcd.setCursor(9,1);
     lcd.print(data[5]);
 
-    // lcd.print("GPU:---%-T:----C");
+    // lcd.print("GPU:---%-T:---°C");
     // lcd.print("MEM:    /     GB");
     // lcd.print("0123456789012345");
     // lcd.setCursor(0,0);

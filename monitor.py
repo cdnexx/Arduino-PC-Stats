@@ -1,4 +1,6 @@
-import GPUtil, psutil, serial, time
+import GPUtil, psutil, serial, time, clr
+clr.AddReference(r'C:/Users/franc/Downloads/openhardwaremonitor-v0.9.6/OpenHardwareMonitor/OpenHardwareMonitorLib')
+from OpenHardwareMonitor.Hardware import Computer
 
 
 # print(f"{gpu.memoryUsed/1000:.2f}/{gpu.memoryTotal/1000:.2f} GB")
@@ -12,11 +14,23 @@ def cpuStatus():
 
 def gpuStatus():
     gpu = GPUtil.getGPUs()[0]
-    temp = 99
+    temp = gpuTemp()
     usage = f"{gpu.load*100:.0f}"
     usedMem = f"{gpu.memoryUsed/1000:.2f}"
     totalMem = f"{gpu.memoryTotal/1000:.2f}"
     return f"{temp},{usage},{usedMem},{totalMem}"
+
+def gpuTemp():
+    c = Computer()
+    c.CPUEnabled = True # get the Info about CPU
+    c.GPUEnabled = True # get the Info about GPU
+    c.Open()
+    for a in range(0, len(c.Hardware[1].Sensors)):
+        # print(c.Hardware[0].Sensors[a].Identifier)
+        if "/temperature" in str(c.Hardware[1].Sensors[a].Identifier):
+            temp = f"{int(c.Hardware[1].Sensors[a].get_Value())}"
+            return temp
+            # c.Hardware[1].Update()
 
 def ramStatus():
     factor = 9.313225746154785*(10**-10)
@@ -38,4 +52,3 @@ while True:
         print("No connection")
         time.sleep(2)
         
-
