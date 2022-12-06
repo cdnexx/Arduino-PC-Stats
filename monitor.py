@@ -9,7 +9,7 @@ from OpenHardwareMonitor.Hardware import Computer
 #cpuTemp, cpuUsage, gpuTemp, gpuUsage, gpuUsedMem, gpuTotalMem, ramUsage, ramUsed, ramTotal
 def cpuStatus():
     temp = 99
-    usage = f"{psutil.cpu_percent()}"
+    usage = f"{psutil.cpu_percent():.0f}"
     return f"{temp},{usage}"
 
 def gpuStatus():
@@ -34,7 +34,7 @@ def gpuTemp():
 
 def ramStatus():
     factor = 9.313225746154785*(10**-10)
-    usage = psutil.virtual_memory().percent
+    usage = f"{psutil.virtual_memory().percent:.0f}"
     used = f"{psutil.virtual_memory().used*factor:.1f}"
     total = f"{psutil.virtual_memory().total*factor:.1f}"
     return f"{usage},{used},{total}"
@@ -45,8 +45,8 @@ while True:
         while True:
             final_string = f"{cpuStatus()},{gpuStatus()},{ramStatus()}"
             arduino.write(final_string.encode('ascii'))
-            print(final_string.encode('ascii'))
-            time.sleep(1.5)
+            # print(final_string.encode('ascii'))
+            time.sleep(0.2)
         arduino.close()
     except:
         print("No connection")
